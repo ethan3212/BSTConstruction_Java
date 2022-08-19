@@ -108,4 +108,44 @@ public class BST {
             rightChild.displayTree();
         }
     }
+
+    // WORST: O(n) time | O(1) space
+    // AVERAGE: O(log(n)) time | O(1) space
+    public  int findClosestValueInBSTIterative(int targetValue) {
+        int closestValueFound = value;
+        BST currentNode = this;
+        while(currentNode != null) {        // O(n) time
+            if(Math.abs(targetValue - currentNode.value) < Math.abs(targetValue - closestValueFound)) {
+                closestValueFound = currentNode.value;
+            } if(currentNode.value < targetValue) {
+                currentNode = currentNode.rightChild;
+            } else if(currentNode.value > targetValue) {
+                currentNode = currentNode.leftChild;
+            } else {
+                break;
+            }
+        }
+        return closestValueFound;
+    }
+
+    // WORST: O(n) time | O(n) space
+    // AVERAGE: O(log(n)) time | O(log(n)) space
+    public int findClosestValueInBSTRecursive(int targetValue) {
+        return helperMethod(this, targetValue, value);
+    }
+
+    // WORST: O(n) time | O(n) space
+    // AVERAGE: O(log(n)) time | O(log(n)) space
+    public static int helperMethod(BST currentNode, int targetValue, int closestValueFound) {
+        if(Math.abs(targetValue - closestValueFound) > Math.abs(targetValue - currentNode.value)) {
+            closestValueFound = currentNode.value;
+        }
+        if(targetValue < currentNode.value && currentNode.leftChild != null) {
+            return helperMethod(currentNode.leftChild, targetValue, closestValueFound);
+        } else if(targetValue > currentNode.value && currentNode.rightChild != null) {
+            return helperMethod(currentNode.rightChild, targetValue, closestValueFound);
+        } else {
+            return closestValueFound;
+        }
+    }
 }
